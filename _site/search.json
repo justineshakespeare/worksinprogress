@@ -1,0 +1,23 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Works in Progress",
+    "section": "",
+    "text": "This page is an informal space for sharing projects I’m currently working on. They stem from graduate courses in the Data Analytics and Computational Social Science program at UMass Amherst, workshops hosted by the Institute for Social Science Research, or independent projects I’ve pursued for personal learning and exploration. See my professional portfolio here.\n\n\nIn this workshop, offered by the Institute of Social Science Research at UMass Amherst, we spent three days learning QGIS, an open-source GIS software used for creating, editing, visualizing, and analyzing geospatial data.\nI wanted more experiencing using U.S. Census data, so I created a map that utilized the American Community Survey 1-Year Estimates to show the change over time in Americans working from home. This map is particularly interesting because it shows the change from 2018 to 2023, spanning the years of the Covid-19 pandemic and illustrating how the stay-at-home orders changed where Americans worked.\nClick here to learn more about the data preprocessing and wrangling steps, how the tabular data was integrated with spatial boundaries, and a brief exploratory analysis of key trends and findings."
+  },
+  {
+    "objectID": "index.html#intro-to-gis",
+    "href": "index.html#intro-to-gis",
+    "title": "Works in Progress",
+    "section": "",
+    "text": "In this workshop, offered by the Institute of Social Science Research at UMass Amherst, we spent three days learning QGIS, an open-source GIS software used for creating, editing, visualizing, and analyzing geospatial data.\nI wanted more experiencing using U.S. Census data, so I created a map that utilized the American Community Survey 1-Year Estimates to show the change over time in Americans working from home. This map is particularly interesting because it shows the change from 2018 to 2023, spanning the years of the Covid-19 pandemic and illustrating how the stay-at-home orders changed where Americans worked.\nClick here to learn more about the data preprocessing and wrangling steps, how the tabular data was integrated with spatial boundaries, and a brief exploratory analysis of key trends and findings."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  }
+]

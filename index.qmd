@@ -2,9 +2,9 @@
 title: "Works in Progress"
 ---
 
-# Works in Progress
+# 
 
-This page is an informal space for sharing projects I'm currently working on. They stem from graduate courses in the Data Analytics and Computational Social Science program at UMass Amherst, workshops hosted by the Institute for Social Science Research, or independent projects I've pursued for personal learning and exploration. See my professional portfolio [here](https://justineshakespeare.github.io/portfolio/).
+This page is an informal space for sharing projects I'm currently working on. These projects are from graduate courses in the Data Analytics and Computational Social Science program at UMass Amherst, workshops hosted by the Institute for Social Science Research, or independent projects I've pursued for personal learning and exploration. See my professional portfolio [here](https://justineshakespeare.github.io/portfolio/).
 
 ## Intro to GIS
 
