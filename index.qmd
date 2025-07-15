@@ -1,0 +1,15 @@
+---
+title: "Works in Progress"
+---
+
+# Works in Progress
+
+This page is an informal space for sharing projects I'm currently working on. They stem from graduate courses in the Data Analytics and Computational Social Science program at UMass Amherst, workshops hosted by the Institute for Social Science Research, or independent projects I've pursued for personal learning and exploration. See my professional portfolio [here](https://justineshakespeare.github.io/portfolio/).
+
+## Intro to GIS
+
+In this workshop, offered by the [Institute of Social Science Research](https://www.umass.edu/social-science-research/) at UMass Amherst, we spent three days learning QGIS, an open-source GIS software used for creating, editing, visualizing, and analyzing geospatial data.
+
+I wanted more experiencing using U.S. Census data, so I created a map that utilized the American Community Survey 1-Year Estimates to show the change over time in Americans working from home. This map is particularly interesting because it shows the change from 2018 to 2023, spanning the years of the Covid-19 pandemic and illustrating how the stay-at-home orders changed where Americans worked.
+
+Click here to learn more about the data preprocessing and wrangling steps, how the tabular data was integrated with spatial boundaries, and a brief exploratory analysis of key trends and findings.

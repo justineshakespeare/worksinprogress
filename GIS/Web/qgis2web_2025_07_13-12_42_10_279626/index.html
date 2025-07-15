@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet.photon.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/L.Control.Layers.Tree.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet.photon.js"></script>
+        <script src="data/JOIN_MoT_GeoUSstate_0.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:false, maxZoom:28, minZoom:1
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        // remove popup's row if "visible-with-data"
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        // add class to format popup if it contains media
+		function addClassToPopupIfMedia(content, popup) {
+			var tempDiv = document.createElement('div');
+			tempDiv.innerHTML = content;
+			if (tempDiv.querySelector('td img')) {
+				popup._contentNode.classList.add('media');
+					// Delay to force the redraw
+					setTimeout(function() {
+						popup.update();
+					}, 10);
+			} else {
+				popup._contentNode.classList.remove('media');
+			}
+		}
+        var zoomControl = L.control.zoom({
+            position: 'topleft'
+        }).addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+        function pop_JOIN_MoT_GeoUSstate_0(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(String(feature.properties['fid']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['GEO_ID'] !== null ? autolinker.link(String(feature.properties['GEO_ID']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NAME.x</th>\
+                        <td class="visible-with-data" id="NAME.x">' + (feature.properties['NAME.x'] !== null ? autolinker.link(String(feature.properties['NAME.x']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Year_Date'] !== null ? autolinker.link(String(feature.properties['Year_Date']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Year</th>\
+                        <td class="visible-with-data" id="Year">' + (feature.properties['Year'] !== null ? autolinker.link(String(feature.properties['Year']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Total'] !== null ? autolinker.link(String(feature.properties['Total']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Total_forprofit'] !== null ? autolinker.link(String(feature.properties['Total_forprofit']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Total_nonprofit'] !== null ? autolinker.link(String(feature.properties['Total_nonprofit']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Total_localGov'] !== null ? autolinker.link(String(feature.properties['Total_localGov']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Total_stateGov'] !== null ? autolinker.link(String(feature.properties['Total_stateGov']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Total_fedGov'] !== null ? autolinker.link(String(feature.properties['Total_fedGov']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Total_selfEmpNotincorp'] !== null ? autolinker.link(String(feature.properties['Total_selfEmpNotincorp']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Total_UnpaidFamily'] !== null ? autolinker.link(String(feature.properties['Total_UnpaidFamily']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Total_DroveAlone'] !== null ? autolinker.link(String(feature.properties['Total_DroveAlone']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Total_Carpooled'] !== null ? autolinker.link(String(feature.properties['Total_Carpooled']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Total_PublicTransport'] !== null ? autolinker.link(String(feature.properties['Total_PublicTransport']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Total_Walked'] !== null ? autolinker.link(String(feature.properties['Total_Walked']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Total_CabBikeOther'] !== null ? autolinker.link(String(feature.properties['Total_CabBikeOther']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Total_WorkFromHome'] !== null ? autolinker.link(String(feature.properties['Total_WorkFromHome']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ForProfit_WFH'] !== null ? autolinker.link(String(feature.properties['ForProfit_WFH']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NonProfit_WFH'] !== null ? autolinker.link(String(feature.properties['NonProfit_WFH']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['LocalGov_WFH'] !== null ? autolinker.link(String(feature.properties['LocalGov_WFH']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['StateGov_WFH'] !== null ? autolinker.link(String(feature.properties['StateGov_WFH']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['FedGov_WFH'] !== null ? autolinker.link(String(feature.properties['FedGov_WFH']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SelfEmpNotInc_WFH'] !== null ? autolinker.link(String(feature.properties['SelfEmpNotInc_WFH']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UnpaidFamily_WFH'] !== null ? autolinker.link(String(feature.properties['UnpaidFamily_WFH']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Total_AllGov'] !== null ? autolinker.link(String(feature.properties['Total_AllGov']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['perc_AllGov'] !== null ? autolinker.link(String(feature.properties['perc_AllGov']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['perc_UnpaidFAm'] !== null ? autolinker.link(String(feature.properties['perc_UnpaidFAm']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['perc_ForProfit'] !== null ? autolinker.link(String(feature.properties['perc_ForProfit']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['perc_NonProfit'] !== null ? autolinker.link(String(feature.properties['perc_NonProfit']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">perc_WFH</th>\
+                        <td class="visible-with-data" id="perc_WFH">' + (feature.properties['perc_WFH'] !== null ? autolinker.link(String(feature.properties['perc_WFH']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['perc_Walk'] !== null ? autolinker.link(String(feature.properties['perc_Walk']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['perc_PubTrans'] !== null ? autolinker.link(String(feature.properties['perc_PubTrans']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['perc_DroveAlone'] !== null ? autolinker.link(String(feature.properties['perc_DroveAlone']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['perc_Carpool'] !== null ? autolinker.link(String(feature.properties['perc_Carpool']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['perc_WFH_AllGov'] !== null ? autolinker.link(String(feature.properties['perc_WFH_AllGov']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['perc_WFH_ForProfit'] !== null ? autolinker.link(String(feature.properties['perc_WFH_ForProfit']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['perc_WFH_NonProfit'] !== null ? autolinker.link(String(feature.properties['perc_WFH_NonProfit']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['perc_WFH_SelfEmpNotInc'] !== null ? autolinker.link(String(feature.properties['perc_WFH_SelfEmpNotInc']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['perc_WFH_UnpaidFamily'] !== null ? autolinker.link(String(feature.properties['perc_WFH_UnpaidFamily']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['GEOIDFQ'] !== null ? autolinker.link(String(feature.properties['GEOIDFQ']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['STATEFP'] !== null ? autolinker.link(String(feature.properties['STATEFP']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['STATENS'] !== null ? autolinker.link(String(feature.properties['STATENS']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['GEOID'] !== null ? autolinker.link(String(feature.properties['GEOID']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['STUSPS'] !== null ? autolinker.link(String(feature.properties['STUSPS']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NAME.y'] !== null ? autolinker.link(String(feature.properties['NAME.y']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['LSAD'] !== null ? autolinker.link(String(feature.properties['LSAD']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ALAND'] !== null ? autolinker.link(String(feature.properties['ALAND']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['AWATER'] !== null ? autolinker.link(String(feature.properties['AWATER']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_JOIN_MoT_GeoUSstate_0_0(feature) {
+            if (feature.properties['perc_WFH'] >= 2.750000 && feature.properties['perc_WFH'] <= 4.710000 ) {
+                return {
+                pane: 'pane_JOIN_MoT_GeoUSstate_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(252,251,253,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['perc_WFH'] >= 4.710000 && feature.properties['perc_WFH'] <= 5.770000 ) {
+                return {
+                pane: 'pane_JOIN_MoT_GeoUSstate_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(237,235,244,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['perc_WFH'] >= 5.770000 && feature.properties['perc_WFH'] <= 7.180000 ) {
+                return {
+                pane: 'pane_JOIN_MoT_GeoUSstate_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(212,212,232,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['perc_WFH'] >= 7.180000 && feature.properties['perc_WFH'] <= 9.970000 ) {
+                return {
+                pane: 'pane_JOIN_MoT_GeoUSstate_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(179,179,214,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['perc_WFH'] >= 9.970000 && feature.properties['perc_WFH'] <= 12.615000 ) {
+                return {
+                pane: 'pane_JOIN_MoT_GeoUSstate_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(146,143,194,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['perc_WFH'] >= 12.615000 && feature.properties['perc_WFH'] <= 15.230000 ) {
+                return {
+                pane: 'pane_JOIN_MoT_GeoUSstate_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(114,97,171,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['perc_WFH'] >= 15.230000 && feature.properties['perc_WFH'] <= 18.110000 ) {
+                return {
+                pane: 'pane_JOIN_MoT_GeoUSstate_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(90,51,149,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['perc_WFH'] >= 18.110000 && feature.properties['perc_WFH'] <= 28.210000 ) {
+                return {
+                pane: 'pane_JOIN_MoT_GeoUSstate_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(63,0,125,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_JOIN_MoT_GeoUSstate_0');
+        map.getPane('pane_JOIN_MoT_GeoUSstate_0').style.zIndex = 400;
+        map.getPane('pane_JOIN_MoT_GeoUSstate_0').style['mix-blend-mode'] = 'normal';
+        var layer_JOIN_MoT_GeoUSstate_0 = new L.geoJson(json_JOIN_MoT_GeoUSstate_0, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_JOIN_MoT_GeoUSstate_0',
+            layerName: 'layer_JOIN_MoT_GeoUSstate_0',
+            pane: 'pane_JOIN_MoT_GeoUSstate_0',
+            onEachFeature: pop_JOIN_MoT_GeoUSstate_0,
+            style: style_JOIN_MoT_GeoUSstate_0_0,
+        });
+        bounds_group.addLayer(layer_JOIN_MoT_GeoUSstate_0);
+        map.addLayer(layer_JOIN_MoT_GeoUSstate_0);
+        setBounds();
+        resetLabels([layer_JOIN_MoT_GeoUSstate_0]);
+        map.on("zoomend", function(){
+            resetLabels([layer_JOIN_MoT_GeoUSstate_0]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_JOIN_MoT_GeoUSstate_0]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_JOIN_MoT_GeoUSstate_0]);
+        });
+        </script>
+    </body>
+</html>
