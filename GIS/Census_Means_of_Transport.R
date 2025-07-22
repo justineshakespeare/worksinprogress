@@ -2,11 +2,13 @@
 # July 3rd
 # Attempts to use tidycensus to pull data from the table: B08528: Means of Transportation to Work by Class of Worker for Workplace Geography to incorporate this data in QGIS and map it
 
-#install.packages("tidycensus")
+#install.packages("scales")
 library(tidycensus)
 library(tidyverse)
 library(sf)
 library(ggplot2)
+library(scales)
+
 
 #census_api_key("376400d6d2e3212b4e723e93850395a6dc9d92f6", install = TRUE)
 
@@ -29,6 +31,8 @@ head(B08528)
 
 # This is an interesting way to do it, but the geoid isn't the same as the one in the CSV downloaded from the website and so it wouldn't immediately join with the geography file we'd use to visualize it in QGIS. It looks like the geoid here is the last two digits of the geoid in the geography file, so I could just change it. But also the column names are a little hard to understand because they don't include notes on the significance of the codes. I will try the CSV file, which has the geoid that matches and notes on the metadata/code and also the actual dataset includes the full description of each column. 
 
+setwd('/Users/justineshakespeare/Documents/worksinprogress')
+getwd()
 ### 2023 
 
 # load the data from 2023
@@ -152,6 +156,7 @@ dim(MeansofTransport_Comb)
 MeansofTransport_Comb <- MeansofTransport_Comb %>%
   rename(
     Total = B08528_001E,
+    MOE_Total = B08528_001M,
     Total_forprofit = B08528_002E,
     Total_nonprofit = B08528_005E,
     Total_localGov = B08528_006E,
@@ -165,6 +170,7 @@ MeansofTransport_Comb <- MeansofTransport_Comb %>%
     Total_Walked = B08528_041E,
     Total_CabBikeOther = B08528_051E,
     Total_WorkFromHome = B08528_061E,
+    MOE_Total_WorkFromHome = B08528_061M,
     ForProfit_WFH = B08528_062E, 
     NonProfit_WFH = B08528_065E, 
     LocalGov_WFH = B08528_066E,
@@ -175,10 +181,19 @@ MeansofTransport_Comb <- MeansofTransport_Comb %>%
     State = NAME
   )
 
+# Create MOE fields with the plus and minus sign that can be used in the popups no QGIS:
+MeansofTransport_Comb <- MeansofTransport_Comb %>%
+  mutate(
+    MOE_Total = as.numeric(MOE_Total),
+    MOE_Total_display = paste0("\u00B1", MOE_Total),
+    MOE_Total_WorkFromHome = as.numeric(MOE_Total_WorkFromHome),
+    MOE_Total_WorkFromHome_display = paste0("\u00B1", MOE_Total_WorkFromHome),
+    
+  )
 
 
 # select only the fields we want to include in the map
-MeansofTransport_Comb <- MeansofTransport_Comb %>% select("GEO_ID", "State", "Year_Date", "Year", "Total", "Total_forprofit", "Total_nonprofit", "Total_localGov", "Total_stateGov", "Total_fedGov", "Total_selfEmpNotincorp", "Total_UnpaidFamily", "Total_DroveAlone", "Total_Carpooled", "Total_PublicTransport", "Total_Walked", "Total_CabBikeOther", "Total_WorkFromHome", "ForProfit_WFH", "NonProfit_WFH", "LocalGov_WFH", "StateGov_WFH", "FedGov_WFH", "SelfEmpNotInc_WFH", "UnpaidFamily_WFH")
+MeansofTransport_Comb <- MeansofTransport_Comb %>% select("GEO_ID", "State", "Year_Date", "Year", "Total", "MOE_Total", "MOE_Total_display", "Total_forprofit", "Total_nonprofit", "Total_localGov", "Total_stateGov", "Total_fedGov", "Total_selfEmpNotincorp", "Total_UnpaidFamily", "Total_DroveAlone", "Total_Carpooled", "Total_PublicTransport", "Total_Walked", "Total_CabBikeOther", "Total_WorkFromHome", "MOE_Total_WorkFromHome", "MOE_Total_WorkFromHome_display", "ForProfit_WFH", "NonProfit_WFH", "LocalGov_WFH", "StateGov_WFH", "FedGov_WFH", "SelfEmpNotInc_WFH", "UnpaidFamily_WFH")
 
 ## Remove states and territories outside of the contiguous US:
 
@@ -189,7 +204,7 @@ MeansofTransport_Comb <- MeansofTransport_Comb[MeansofTransport_Comb$State != "H
 
 # Check our work
 head(MeansofTransport_Comb)
-View(MeansofTransport_Comb)
+#View(MeansofTransport_Comb)
 
 
 # make all numeric fields numeric (note that you will still have to double check this when importing to QGIS using Layer > Data Source Manager)
@@ -239,6 +254,30 @@ MeansofTransport_Comb <- MeansofTransport_Comb %>%
     perc_WFH_UnpaidFamily = round((UnpaidFamily_WFH/Total_UnpaidFamily)*100, 2)
     )
 
+# Create MOEs for the percentage values. See guidance on how to calculate this here on page 56: https://www.census.gov/content/dam/Census/library/publications/2018/acs/acs_general_handbook_2018_ch08.pdf
+
+# P = X/Y (percentage = Total_WorkFromHome / Total)
+# MOE(P) = 1/Y sqrt([MOE_X]^2 - (P^2 * [MOE_Y]^2))
+
+MeansofTransport_Comb <- MeansofTransport_Comb %>%
+  mutate(
+    perc_MOE_WFH = (1/Total*(sqrt((MOE_Total_WorkFromHome^2)-(((Total_WorkFromHome / Total)^2)*(MOE_Total)^2))))*100,
+    perc_MOE_WFH_display = paste0("\u00B1", perc_MOE_WFH),
+  )
+
+## Adding MOE's to values:
+
+MeansofTransport_Comb <- MeansofTransport_Comb %>%
+  mutate(
+    Perc_WFH_MOE_display_complete = paste0(round(perc_WFH, 1),"%", "  ", "\u00B1", round(perc_MOE_WFH, 1), " ", "pp"),
+    MOE_Total_WorkFromHome_display_complete = paste0(comma(round(Total_WorkFromHome, 1), accuracy = 1), "  ", "\u00B1", comma(round(MOE_Total_WorkFromHome, 1), accuracy = 1))
+  
+  )
+
+View(MeansofTransport_Comb)
+
+
+
 # View(MeansofTransport_Comb)
 range(MeansofTransport_Comb$perc_WFH)    
 
@@ -264,7 +303,7 @@ geometry_US <- geometry_US[geometry_US$NAME != "United States Virgin Islands", ]
 geometry_US <- geometry_US[geometry_US$NAME != "Puerto Rico", ]
 geometry_US <- geometry_US[geometry_US$NAME != "Commonwealth of the Northern Mariana Islands", ]
 
-View(geometry_US)
+# View(geometry_US)
 
 # Make key that we'll join on thee same name and character
 geometry_US <- geometry_US %>% mutate(GEOIDFQ = as.character(GEOIDFQ))
@@ -280,14 +319,16 @@ JOIN_MoT_GeoUSstate <- MeansofTransport_Comb %>%
 
 # Check result
 print(JOIN_MoT_GeoUSstate)
-View(JOIN_MoT_GeoUSstate)
+# View(JOIN_MoT_GeoUSstate)
 
 # export joined data for QGIS
 st_write(JOIN_MoT_GeoUSstate, "GIS/JOIN_MoT_GeoUSstate.gpkg", delete_layer = TRUE)
 
 
 # Shorter version for QGIS2WEB in July 2025 focusing on just WFH:
-JOIN_MoT_GeoUSstate_WFH <- JOIN_MoT_GeoUSstate %>% select("State", "Year_Date", "Year", "Total", "perc_WFH")
+JOIN_MoT_GeoUSstate_WFH <- JOIN_MoT_GeoUSstate %>% select("State", "Year_Date", "Year", "Total", "MOE_Total", "MOE_Total_display", "Total_WorkFromHome", "MOE_Total_WorkFromHome", "MOE_Total_WorkFromHome_display", "Perc_WFH_MOE_display_complete", "perc_WFH", "perc_MOE_WFH", "perc_MOE_WFH_display", "MOE_Total_WorkFromHome_display_complete")
+
+#View(JOIN_MoT_GeoUSstate_WFH)
 
 # export WFH shorter joined data for QGIS
 st_write(JOIN_MoT_GeoUSstate_WFH, "GIS/JOIN_MoT_GeoUSstate_WFH.gpkg", delete_layer = TRUE)
@@ -296,7 +337,7 @@ st_write(JOIN_MoT_GeoUSstate_WFH, "GIS/JOIN_MoT_GeoUSstate_WFH.gpkg", delete_lay
 ## Look to see what type of job is most likely to work from home.
 #ggplot()
 
-View(MeansofTransport_Comb)
+View(JOIN_MoT_GeoUSstate_WFH)
 
 
 ggplot(MeansofTransport_Comb, aes(x = State, y = perc_WFH)) +
