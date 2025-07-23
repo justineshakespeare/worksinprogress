@@ -12,4 +12,4 @@ In this workshop, offered by the [Institute of Social Science Research](https://
 
 I wanted more experiencing using U.S. Census data, so I created a [map](GIS/Web/qgis2web_2025_07_22-13_21/index.html) that utilized the American Community Survey 1-Year Estimates to show the change over time in Americans working from home. This map is particularly interesting because it shows the change from 2018 to 2023, spanning the years of the Covid-19 pandemic and illustrating how the stay-at-home orders changed where Americans worked.
 
-Click here to learn more about the data preprocessing and wrangling steps, how the tabular data was integrated with spatial boundaries, and a brief exploratory analysis of key trends and findings.
+Click here to learn more about the data preprocessing and wrangling steps, how the tabular data was integrated with spatial boundaries, and a exploratory analysis of key trends and findings.
