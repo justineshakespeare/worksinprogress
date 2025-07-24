@@ -1,7 +1,7 @@
 ---
-title: "Exploratory Analysis of Remote Work by Class of Worker Using American Community Survey B08528 Workplace Geography Data"
+title: "Exploratory Analysis of Remote Work by Class of Worker: 2018-2023"
 author: "Justine Shakespeare"
-description: "Exploratory Analysis of Remote Work by Class of Worker Using American Community Survey B08528 Workplace Geography Data"
+description: "This exploratory analysis examines trends in working from home in the United States between 2018 and 2023 using Census data from the American Community Survey table B08528 (Means of Transportation to Work by Class of Worker for Workplace Geography). It highlights national and state-level changes in work-from-home rates, and compares remote work patterns by class of worker before and after the COVID-19 pandemic. The analysis also identifies which worker groups most quickly returned to in-person work by 2023 and explores potential correlations between remote work prevalence and state-level political alignment based on the 2020 presidential election."
 date: "07/23/2025"
 format:
   html:
@@ -35,7 +35,12 @@ knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
 
 
 
-Description of the 
+Exploratory Analysis of Remote Work by Class of Worker Using American Community Survey B08528 Workplace Geography Data
+
+
+
+
+
 
 
 Data source:
