@@ -1,0 +1,30 @@
+---
+title: "Census Data: Means of Transportation to Work"
+author: "Justine Shakespeare"
+description: "Exploratory Analysis of Remote Work by Class of Worker Using American Community Survey B08528 Workplace Geography Data"
+date: "07/23/2025"
+format:
+  html:
+    df-print: paged
+    toc: true
+    code-fold: true
+    code-copy: true
+    code-tools: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| label: setup
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(knitr)
+
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+```
+
+Data source:
+
+U.S. Census Bureau, U.S. Department of Commerce. (n.d.). Means of Transportation to Work by Class of Worker for Workplace Geography. American Community Survey, ACS 1-Year Estimates Detailed Tables, Table B08528. Retrieved July 23, 2025, from https://data.census.gov/table/ACSDT1Y2023.B08528?t=Class+of+Worker&d=ACS+1-Year+Estimates+Detailed+Tables.
