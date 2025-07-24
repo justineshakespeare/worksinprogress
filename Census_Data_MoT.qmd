@@ -1,5 +1,5 @@
 ---
-title: "Census Data: Means of Transportation to Work"
+title: "Exploratory Analysis of Remote Work by Class of Worker Using American Community Survey B08528 Workplace Geography Data"
 author: "Justine Shakespeare"
 description: "Exploratory Analysis of Remote Work by Class of Worker Using American Community Survey B08528 Workplace Geography Data"
 date: "07/23/2025"
@@ -24,6 +24,19 @@ library(knitr)
 
 knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
 ```
+
+# Research Questions:
+
+1. What is the national trend of work from home from 2018 to 2023?
+2. Which states saw the largest increases or decreases in remote work over this period? with regards to both absolute and percentage change.
+3. Which class of workers worked from home the most before Covid-19 pandemic? Which worked from home the most after the pandemic?
+4. Which class of workers was the quickest to return to the office (and so decrease work from home) after the pandemic began to subside (2023)?
+5. Taking precautions during the Covid-19 pandemic, including working from home, became very politicized. Does the state-level data on work from home correlate with electoral politics and specific which states voted for Biden vs. Trump in 2020?
+
+
+
+Description of the 
+
 
 Data source:
 
