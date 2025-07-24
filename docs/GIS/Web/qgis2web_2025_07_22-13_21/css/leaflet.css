@@ -650,7 +650,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
   color: #333;
   padding: 10px;
   width: 1100px;       /* narrower width — adjust as needed */
-  height: 330px;      /* taller height — adjust as needed */
+  height: 335px;      /* taller height — adjust as needed */
   overflow-y: auto;   /* adds scrollbar if content is taller than box */
 
 }
