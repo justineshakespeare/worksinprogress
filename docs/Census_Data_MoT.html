@@ -8,9 +8,9 @@
 
 <meta name="author" content="Justine Shakespeare">
 <meta name="dcterms.date" content="2025-07-23">
-<meta name="description" content="Exploratory Analysis of Remote Work by Class of Worker Using American Community Survey B08528 Workplace Geography Data">
+<meta name="description" content="This exploratory analysis examines trends in working from home in the United States between 2018 and 2023 using Census data from the American Community Survey table B08528 (Means of Transportation to Work by Class of Worker for Workplace Geography). It highlights national and state-level changes in work-from-home rates, and compares remote work patterns by class of worker before and after the COVID-19 pandemic. The analysis also identifies which worker groups most quickly returned to in-person work by 2023 and explores potential correlations between remote work prevalence and state-level political alignment based on the 2020 presidential election.">
 
-<title>Exploratory Analysis of Remote Work by Class of Worker Using American Community Survey B08528 Workplace Geography Data – worksinprogress</title>
+<title>Exploratory Analysis of Remote Work by Class of Worker: 2018-2023</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -60,112 +60,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-09537c9ecba8558085948e1b802a414a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
-  "copy-button": false,
-  "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
-  "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
-  }
-}</script>
-<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
-<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<script src="Census_Data_MoT_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Census_Data_MoT_files/libs/quarto-html/quarto.js"></script>
+<script src="Census_Data_MoT_files/libs/quarto-html/popper.min.js"></script>
+<script src="Census_Data_MoT_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Census_Data_MoT_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Census_Data_MoT_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Census_Data_MoT_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Census_Data_MoT_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Census_Data_MoT_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Census_Data_MoT_files/libs/bootstrap/bootstrap-4bba5e2a3696111c7f0c20ecb83df5d3.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="Census_Data_MoT_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="Census_Data_MoT_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
 
 
-<link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed">
+<body>
 
-<div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">worksinprogress</span>
-    </a>
-  </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
-<span class="menu-text">Home</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
-<span class="menu-text">About</span></a>
-  </li>  
-</ul>
-          </div> <!-- /navcollapse -->
-            <div class="quarto-navbar-tools">
-</div>
-      </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
-<!-- sidebar -->
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
    
   <ul>
   <li><a href="#research-questions" id="toc-research-questions" class="nav-link active" data-scroll-target="#research-questions">Research Questions:</a></li>
   </ul>
 </nav>
-    </div>
-<!-- main -->
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Exploratory Analysis of Remote Work by Class of Worker Using American Community Survey B08528 Workplace Geography Data</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Exploratory Analysis of Remote Work by Class of Worker: 2018-2023</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 </div>
 
 <div>
   <div class="description">
-    Exploratory Analysis of Remote Work by Class of Worker Using American Community Survey B08528 Workplace Geography Data
+    This exploratory analysis examines trends in working from home in the United States between 2018 and 2023 using Census data from the American Community Survey table B08528 (Means of Transportation to Work by Class of Worker for Workplace Geography). It highlights national and state-level changes in work-from-home rates, and compares remote work patterns by class of worker before and after the COVID-19 pandemic. The analysis also identifies which worker groups most quickly returned to in-person work by 2023 and explores potential correlations between remote work prevalence and state-level political alignment based on the 2020 presidential election.
   </div>
 </div>
 
@@ -212,16 +144,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Which class of workers was the quickest to return to the office (and so decrease work from home) after the pandemic began to subside (2023)?</li>
 <li>Taking precautions during the Covid-19 pandemic, including working from home, became very politicized. Does the state-level data on work from home correlate with electoral politics and specific which states voted for Biden vs.&nbsp;Trump in 2020?</li>
 </ol>
-<p>Description of the</p>
+<p>Exploratory Analysis of Remote Work by Class of Worker Using American Community Survey B08528 Workplace Geography Data</p>
 <p>Data source:</p>
 <p>U.S. Census Bureau, U.S. Department of Commerce. (n.d.). Means of Transportation to Work by Class of Worker for Workplace Geography. American Community Survey, ACS 1-Year Estimates Detailed Tables, Table B08528. Retrieved July 23, 2025, from https://data.census.gov/table/ACSDT1Y2023.B08528?t=Class+of+Worker&amp;d=ACS+1-Year+Estimates+Detailed+Tables.</p>
-
-
 <!-- -->
 
 </section>
 
-</main> <!-- /main -->
+</main>
+<!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -691,9 +622,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Exploratory Analysis of Remote Work by Class of Worker Using American Community Survey B08528 Workplace Geography Data"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Exploratory Analysis of Remote Work by Class of Worker: 2018-2023"</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Justine Shakespeare"</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "Exploratory Analysis of Remote Work by Class of Worker Using American Community Survey B08528 Workplace Geography Data"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "This exploratory analysis examines trends in working from home in the United States between 2018 and 2023 using Census data from the American Community Survey table B08528 (Means of Transportation to Work by Class of Worker for Workplace Geography). It highlights national and state-level changes in work-from-home rates, and compares remote work patterns by class of worker before and after the COVID-19 pandemic. The analysis also identifies which worker groups most quickly returned to in-person work by 2023 and explores potential correlations between remote work prevalence and state-level political alignment based on the 2020 presidential election."</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "07/23/2025"</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
@@ -719,20 +650,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="fu"># Research Questions:</span></span>
 <span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>What is the national trend of work from home from 2018 to 2023?</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Which states saw the largest increases or decreases in remote work over this period? with regards to both absolute and percentage change.</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Which class of workers worked from home the most before Covid-19 pandemic? Which worked from home the most after the pandemic?</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Which class of workers was the quickest to return to the office (and so decrease work from home) after the pandemic began to subside (2023)?</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Taking precautions during the Covid-19 pandemic, including working from home, became very politicized. Does the state-level data on work from home correlate with electoral politics and specific which states voted for Biden vs. Trump in 2020?</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>What is the national trend of work from home from 2018 to 2023?</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Which states saw the largest increases or decreases in remote work over this period? with regards to both absolute and percentage change.</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Which class of workers worked from home the most before Covid-19 pandemic? Which worked from home the most after the pandemic?</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Which class of workers was the quickest to return to the office (and so decrease work from home) after the pandemic began to subside (2023)?</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>Taking precautions during the Covid-19 pandemic, including working from home, became very politicized. Does the state-level data on work from home correlate with electoral politics and specific which states voted for Biden vs. Trump in 2020?</span>
 <span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>Exploratory Analysis of Remote Work by Class of Worker Using American Community Survey B08528 Workplace Geography Data</span>
 <span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>Description of the </span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>Data source:</span>
 <span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>Data source:</span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>U.S. Census Bureau, U.S. Department of Commerce. (n.d.). Means of Transportation to Work by Class of Worker for Workplace Geography. American Community Survey, ACS 1-Year Estimates Detailed Tables, Table B08528. Retrieved July 23, 2025, from https://data.census.gov/table/ACSDT1Y2023.B08528?t=Class+of+Worker&amp;d=ACS+1-Year+Estimates+Detailed+Tables.</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>U.S. Census Bureau, U.S. Department of Commerce. (n.d.). Means of Transportation to Work by Class of Worker for Workplace Geography. American Community Survey, ACS 1-Year Estimates Detailed Tables, Table B08528. Retrieved July 23, 2025, from https://data.census.gov/table/ACSDT1Y2023.B08528?t=Class+of+Worker&amp;d=ACS+1-Year+Estimates+Detailed+Tables.</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
